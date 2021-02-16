@@ -3,6 +3,7 @@
 export("%>%")
 export(creaCalendario)
 export(in_km)
+export(numero_giorni)
 export(prepara_dati)
 importFrom(magrittr,"%>%")
 importFrom(rlang,.data)
