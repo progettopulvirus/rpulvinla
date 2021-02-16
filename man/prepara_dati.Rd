@@ -24,8 +24,8 @@ prepara_dati(
 a \link[tibble:tibble-package]{tibble}
 }
 \description{
-La funzione restituisce il tibble .x con in piu' la variabile "banda", un intero che va da 1 al numero di osservazioni per il periodo
-oggetto di analisi. La variabile "banda" e' necessaria per costruire il campo SPDE. Mettendo il parametro logaritmo=TRUE il tibble .x presenta in output la variabile lvalue (logaritmo di value). Il parametro
+La funzione restituisce il tibble .x con in piu': 1) la variabile "banda", un intero che va da 1 al numero di osservazioni per il periodo
+oggetto di analisi; la variabile Intercept. La variabile "banda" e' necessaria per costruire il campo SPDE. Mettendo il parametro logaritmo=TRUE il tibble .x presenta in output la variabile lvalue (logaritmo di value). Il parametro
 lockdown=TRUE restitusce nel tibble di output una colonna di nome "lockdown" pari a 0 per il periodo che va dall'inizio delle osservazioni alla data
 fissata dal parametro "inizio_lockdown" e pari a 1 altrimenti.
 }

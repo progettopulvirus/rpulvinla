@@ -1,6 +1,6 @@
 Package: rpulvinla
 Title: Funzioni Per Il Progetto PULVIRUS Modello INLA
-Version: 1.0.0.0
+Version: 1.0.0.1
 Authors@R: 
     person(given = "Guido",
            family = "Fioravanti",
