@@ -1,0 +1,25 @@
+Package: rpulvinla
+Title: Funzioni Per Il Progetto PULVIRUS Modello INLA
+Version: 1.0.0.0
+Authors@R: 
+    person(given = "Guido",
+           family = "Fioravanti",
+           role = c("aut", "cre"),
+           email = "guido.fioravanti@isprambiente.it",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Il pacchetto fornisce diverse utility per lo sviluppo del modello mediante INLA.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    dplyr,
+    purrr,
+    tibble,
+    magrittr,
+    rlang,
+    glue,
+    tidyr,
+    sf,
+    sp
