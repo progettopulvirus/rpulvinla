@@ -1,6 +1,6 @@
 Package: rpulvinla
 Title: Funzioni Per Il Progetto PULVIRUS Modello INLA
-Version: 1.0.0.1
+Version: 1.1.0.0
 Authors@R: 
     person(given = "Guido",
            family = "Fioravanti",
@@ -22,4 +22,5 @@ Imports:
     glue,
     tidyr,
     sf,
-    sp
+    sp,
+    lubridate

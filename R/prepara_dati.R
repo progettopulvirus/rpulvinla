@@ -4,19 +4,23 @@
 #' La funzione restituisce il tibble .x con in piu': 1) la variabile "banda", un intero che va da 1 al numero di osservazioni per il periodo
 #' oggetto di analisi; la variabile Intercept. La variabile "banda" e' necessaria per costruire il campo SPDE. Mettendo il parametro logaritmo=TRUE il tibble .x presenta in output la variabile lvalue (logaritmo di value). Il parametro
 #' lockdown=TRUE restitusce nel tibble di output una colonna di nome "lockdown" pari a 0 per il periodo che va dall'inizio delle osservazioni alla data
-#' fissata dal parametro "inizio_lockdown" e pari a 1 altrimenti.
-#'    
+#' fissata dal parametro "inizio_lockdown" e pari a 1 altrimenti. Impostando day a TRUE viene creato un duplicato della variabile banda (banda e' una variabile pensata per l'spde mentre
+#' day puo' essere usata per uno smoother al di fuori dell'spde). Impostando wday a TRUE viene creata una variabile che assume valori da 1 a 7 a seconda del giorno della settimana.
+#' Impostando week a TRUE viene creata una variabile che assume valori da 1 a numero delle settimane del periodo in esame.   
 #' @param .x Un tibble con i dati di input     
 #' @param logaritmo Logical
 #' @param lockdown Logical
 #' @param inizio_lockdown Character o Logical nel formato %Y-%m-%d
+#' @param day Logical 
+#' @param wday Logical  
+#' @param week Logical 
 #' 
 #' @return a [tibble][tibble::tibble-package]
 #' 
 #' @importFrom rlang .data 
 #' 
 #' @export                                          
-prepara_dati<-function(.x,logaritmo=TRUE,lockdown=TRUE,inizio_lockdown="2020-03-07"){
+prepara_dati<-function(.x,logaritmo=TRUE,lockdown=TRUE,inizio_lockdown="2020-03-07",day=FALSE,wday=FALSE,week=FALSE){
   
   purrr::walk(c("value","station_eu_code","yy","mm","dd","date"),.f=function(nomeColonna){
     grep(nomeColonna,names(.x))->colonna
@@ -74,6 +78,8 @@ prepara_dati<-function(.x,logaritmo=TRUE,lockdown=TRUE,inizio_lockdown="2020-03-
   #associo a .x il campo "banda"  
   dplyr::left_join(.x,gfinale,by=c("yy"="yy","mm"="mm","dd"="dd","station_eu_code"="station_eu_code"))->gfinale
   
+  #se voglio un trend sul giorno creo un duplicato di banda. banda mi serve per l'spde, mentre giorno la posso usare per uno smoother   
+  if(day) gfinale$day<-gfinale$banda
   
   if(logaritmo) gfinale$lvalue<-log(gfinale$value+0.1)
   
@@ -92,6 +98,12 @@ prepara_dati<-function(.x,logaritmo=TRUE,lockdown=TRUE,inizio_lockdown="2020-03-
     
   #Intercetta  
   gfinale$Intercept<-0
+  
+  #wday
+  if(wday) gfinale$wday<-lubridate::wday(gfinale$date,week_start = 1)
+  
+  #week  
+  if(week) gfinale$week<-lubridate::week(gfinale$date)
   
   gfinale
   
