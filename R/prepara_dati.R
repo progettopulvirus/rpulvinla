@@ -103,7 +103,7 @@ prepara_dati<-function(.x,logaritmo=TRUE,lockdown=TRUE,inizio_lockdown="2020-03-
   if(wday) gfinale$wday<-lubridate::wday(gfinale$date,week_start = 1)
   
   #week  
-  if(week) gfinale$week<-lubridate::week(gfinale$date)
+  if(week) gfinale$week<-lubridate::isoweek(gfinale$date)
   
   gfinale
   
