@@ -97,7 +97,7 @@ prepara_dati<-function(.x,logaritmo=TRUE,lockdown=TRUE,inizio_lockdown="2020-03-
   }
     
   #Intercetta  
-  gfinale$Intercept<-0
+  gfinale$Intercept<-1
   
   #wday
   if(wday) gfinale$wday<-lubridate::wday(gfinale$date,week_start = 1)
