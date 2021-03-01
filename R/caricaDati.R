@@ -11,8 +11,6 @@
 #' @return 
 #' tibble con i dati richiesti
 #' 
-#' @example 
-#' caricaDati(pacchetto="lazio",inquinante="pm10")->dati
 #' 
 #' @export
 caricaDati<-function(pacchetto,inquinante,verbose=FALSE){ 

@@ -6,6 +6,7 @@
 \usage{
 prepara_dati(
   .x,
+  previous = FALSE,
   logaritmo = TRUE,
   lockdown = TRUE,
   inizio_lockdown = "2020-03-07",
@@ -16,6 +17,8 @@ prepara_dati(
 }
 \arguments{
 \item{.x}{Un tibble con i dati di input}
+
+\item{previous}{Logical}
 
 \item{logaritmo}{Logical}
 
@@ -34,8 +37,11 @@ a \link[tibble:tibble-package]{tibble}
 }
 \description{
 La funzione restituisce il tibble .x con in piu': 1) la variabile "banda", un intero che va da 1 al numero di osservazioni per il periodo
-oggetto di analisi; la variabile Intercept. La variabile "banda" e' necessaria per costruire il campo SPDE. Mettendo il parametro logaritmo=TRUE il tibble .x presenta in output la variabile lvalue (logaritmo di value). Il parametro
-lockdown=TRUE restitusce nel tibble di output una colonna di nome "lockdown" pari a 0 per il periodo che va dall'inizio delle osservazioni alla data
+oggetto di analisi; la variabile Intercept. La variabile "banda" e' necessaria per costruire il campo SPDE.
+Settando il parametro previous a TRUE viene restituito inoutput un tibble con la colonna "pvalue" ovvero il valore dell'inquinante nel giorno precedente.
+Mettendo il parametro logaritmo=TRUE il tibble .x presenta in output la variabile lvalue (logaritmo di value). Se previous e' uguale a TRUE viene restituita anche la colonna
+lpvalue ovvero il logaritmo del valore dell'inquinante nel giorno precedente.
+Il parametro lockdown=TRUE restitusce nel tibble di output una colonna di nome "lockdown" pari a 0 per il periodo che va dall'inizio delle osservazioni alla data
 fissata dal parametro "inizio_lockdown" e pari a 1 altrimenti. Impostando day a TRUE viene creato un duplicato della variabile banda (banda e' una variabile pensata per l'spde mentre
 day puo' essere usata per uno smoother al di fuori dell'spde). Impostando wday a TRUE viene creata una variabile che assume valori da 1 a 7 a seconda del giorno della settimana.
 Impostando week a TRUE viene creata una variabile che assume valori da 1 a numero delle settimane del periodo in esame.

@@ -2,12 +2,16 @@
 #' 
 #' @description 
 #' La funzione restituisce il tibble .x con in piu': 1) la variabile "banda", un intero che va da 1 al numero di osservazioni per il periodo
-#' oggetto di analisi; la variabile Intercept. La variabile "banda" e' necessaria per costruire il campo SPDE. Mettendo il parametro logaritmo=TRUE il tibble .x presenta in output la variabile lvalue (logaritmo di value). Il parametro
-#' lockdown=TRUE restitusce nel tibble di output una colonna di nome "lockdown" pari a 0 per il periodo che va dall'inizio delle osservazioni alla data
+#' oggetto di analisi; la variabile Intercept. La variabile "banda" e' necessaria per costruire il campo SPDE. 
+#' Settando il parametro previous a TRUE viene restituito inoutput un tibble con la colonna "pvalue" ovvero il valore dell'inquinante nel giorno precedente.
+#' Mettendo il parametro logaritmo=TRUE il tibble .x presenta in output la variabile lvalue (logaritmo di value). Se previous e' uguale a TRUE viene restituita anche la colonna 
+#' lpvalue ovvero il logaritmo del valore dell'inquinante nel giorno precedente. 
+#' Il parametro lockdown=TRUE restitusce nel tibble di output una colonna di nome "lockdown" pari a 0 per il periodo che va dall'inizio delle osservazioni alla data
 #' fissata dal parametro "inizio_lockdown" e pari a 1 altrimenti. Impostando day a TRUE viene creato un duplicato della variabile banda (banda e' una variabile pensata per l'spde mentre
 #' day puo' essere usata per uno smoother al di fuori dell'spde). Impostando wday a TRUE viene creata una variabile che assume valori da 1 a 7 a seconda del giorno della settimana.
 #' Impostando week a TRUE viene creata una variabile che assume valori da 1 a numero delle settimane del periodo in esame.   
-#' @param .x Un tibble con i dati di input     
+#' @param .x Un tibble con i dati di input   
+#' @param previous Logical  
 #' @param logaritmo Logical
 #' @param lockdown Logical
 #' @param inizio_lockdown Character o Logical nel formato %Y-%m-%d
@@ -20,10 +24,10 @@
 #' @importFrom rlang .data 
 #' 
 #' @export                                          
-prepara_dati<-function(.x,logaritmo=TRUE,lockdown=TRUE,inizio_lockdown="2020-03-07",day=FALSE,wday=FALSE,week=FALSE){
+prepara_dati<-function(.x,previous=FALSE,logaritmo=TRUE,lockdown=TRUE,inizio_lockdown="2020-03-07",day=FALSE,wday=FALSE,week=FALSE){
   
   purrr::walk(c("value","station_eu_code","yy","mm","dd","date"),.f=function(nomeColonna){
-    grep(nomeColonna,names(.x))->colonna
+    which(names(.x)==nomeColonna)->colonna
     if(length(colonna)!=1) stop(glue::glue("Non trovo la colonna '{nomeColonna}'"))
   })
   
@@ -95,6 +99,21 @@ prepara_dati<-function(.x,logaritmo=TRUE,lockdown=TRUE,inizio_lockdown="2020-03-
     }
 
   }
+  
+  #creo la variabile pvalue con il valore dell'inquinante nel giorno precedente
+  if(previous){
+    
+    
+    gfinale[,c("station_eu_code","date","value")]->copia
+    copia$date<-copia$date+1
+    names(copia)[grep("value",names(copia))]<-"pvalue"
+
+    dplyr::left_join(gfinale,copia,by=c("station_eu_code","date"))->gfinale
+    rm(copia)
+    if(logaritmo) gfinale$lpvalue<-log(gfinale$pvalue+0.1)
+    
+  }#fine previous
+  
     
   #Intercetta  
   gfinale$Intercept<-1
