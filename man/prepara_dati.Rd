@@ -9,10 +9,12 @@ prepara_dati(
   previous = FALSE,
   logaritmo = TRUE,
   lockdown = TRUE,
-  inizio_lockdown = "2020-03-07",
+  inizio_lockdown = "2020-03-09",
+  fine_lockdown = "2020-05-03",
   day = FALSE,
   wday = FALSE,
-  week = FALSE
+  week = FALSE,
+  weekend = FALSE
 )
 }
 \arguments{
@@ -26,11 +28,15 @@ prepara_dati(
 
 \item{inizio_lockdown}{Character o Logical nel formato \%Y-\%m-\%d}
 
+\item{fine_lockdown}{Character o Logical nel formato \%Y-\%m-\%d}
+
 \item{day}{Logical}
 
 \item{wday}{Logical}
 
 \item{week}{Logical}
+
+\item{weekend}{Logical}
 }
 \value{
 a \link[tibble:tibble-package]{tibble}
@@ -41,8 +47,9 @@ oggetto di analisi; la variabile Intercept. La variabile "banda" e' necessaria p
 Settando il parametro previous a TRUE viene restituito inoutput un tibble con la colonna "pvalue" ovvero il valore dell'inquinante nel giorno precedente.
 Mettendo il parametro logaritmo=TRUE il tibble .x presenta in output la variabile lvalue (logaritmo di value). Se previous e' uguale a TRUE viene restituita anche la colonna
 lpvalue ovvero il logaritmo del valore dell'inquinante nel giorno precedente.
-Il parametro lockdown=TRUE restitusce nel tibble di output una colonna di nome "lockdown" pari a 0 per il periodo che va dall'inizio delle osservazioni alla data
-fissata dal parametro "inizio_lockdown" e pari a 1 altrimenti. Impostando day a TRUE viene creato un duplicato della variabile banda (banda e' una variabile pensata per l'spde mentre
+Il parametro lockdown=TRUE restitusce nel tibble di output una colonna di nome "lockdown" pari a 1 per il periodo compreso tra "inizio_lockdown" e "fine_lockdown"
+pari a 0 altrimenti. Impostando day a TRUE viene creato un duplicato della variabile banda (banda e' una variabile pensata per l'spde mentre
 day puo' essere usata per uno smoother al di fuori dell'spde). Impostando wday a TRUE viene creata una variabile che assume valori da 1 a 7 a seconda del giorno della settimana.
 Impostando week a TRUE viene creata una variabile che assume valori da 1 a numero delle settimane del periodo in esame.
+Impostando weekend a TRUE viene creata una variabile 0/1 per l'effetto fine settimana (sabato-domenica).
 }

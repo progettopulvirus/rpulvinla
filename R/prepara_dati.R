@@ -6,25 +6,36 @@
 #' Settando il parametro previous a TRUE viene restituito inoutput un tibble con la colonna "pvalue" ovvero il valore dell'inquinante nel giorno precedente.
 #' Mettendo il parametro logaritmo=TRUE il tibble .x presenta in output la variabile lvalue (logaritmo di value). Se previous e' uguale a TRUE viene restituita anche la colonna 
 #' lpvalue ovvero il logaritmo del valore dell'inquinante nel giorno precedente. 
-#' Il parametro lockdown=TRUE restitusce nel tibble di output una colonna di nome "lockdown" pari a 0 per il periodo che va dall'inizio delle osservazioni alla data
-#' fissata dal parametro "inizio_lockdown" e pari a 1 altrimenti. Impostando day a TRUE viene creato un duplicato della variabile banda (banda e' una variabile pensata per l'spde mentre
+#' Il parametro lockdown=TRUE restitusce nel tibble di output una colonna di nome "lockdown" pari a 1 per il periodo compreso tra "inizio_lockdown" e "fine_lockdown" 
+#' pari a 0 altrimenti. Impostando day a TRUE viene creato un duplicato della variabile banda (banda e' una variabile pensata per l'spde mentre
 #' day puo' essere usata per uno smoother al di fuori dell'spde). Impostando wday a TRUE viene creata una variabile che assume valori da 1 a 7 a seconda del giorno della settimana.
 #' Impostando week a TRUE viene creata una variabile che assume valori da 1 a numero delle settimane del periodo in esame.   
+#' Impostando weekend a TRUE viene creata una variabile 0/1 per l'effetto fine settimana (sabato-domenica).   
 #' @param .x Un tibble con i dati di input   
 #' @param previous Logical  
 #' @param logaritmo Logical
 #' @param lockdown Logical
 #' @param inizio_lockdown Character o Logical nel formato %Y-%m-%d
+#' @param fine_lockdown Character o Logical nel formato %Y-%m-%d
 #' @param day Logical 
 #' @param wday Logical  
 #' @param week Logical 
+#' @param weekend Logical
 #' 
 #' @return a [tibble][tibble::tibble-package]
 #' 
 #' @importFrom rlang .data 
 #' 
 #' @export                                          
-prepara_dati<-function(.x,previous=FALSE,logaritmo=TRUE,lockdown=TRUE,inizio_lockdown="2020-03-07",day=FALSE,wday=FALSE,week=FALSE){
+prepara_dati<-function(.x,previous=FALSE,
+                       logaritmo=TRUE,
+                       lockdown=TRUE,
+                       inizio_lockdown="2020-03-09",
+                       fine_lockdown="2020-05-03",
+                       day=FALSE,
+                       wday=FALSE,
+                       week=FALSE,
+                       weekend=FALSE){
   
   purrr::walk(c("value","station_eu_code","yy","mm","dd","date"),.f=function(nomeColonna){
     which(names(.x)==nomeColonna)->colonna
@@ -94,7 +105,23 @@ prepara_dati<-function(.x,previous=FALSE,logaritmo=TRUE,lockdown=TRUE,inizio_loc
     if(firstDate>=inizio_lockdown){
       warning(glue::glue("Attenzione, il dataset copre un periodo un periodo oltre la data del {inizio_lockdown}, la variabile lockdown sara' tutta uguale a 1"))
     }else{ 
-      which(gfinale$date>=inizio_lockdown)->righe
+      
+      lastDate<-as.Date("2020-05-31")
+      
+      
+      if(is.null(fine_lockdown)){
+        fine_lockdown<-lastDate
+      }else{
+        
+        as.Date(fine_lockdown)->fine_lockdown
+        
+      }
+
+      if(inizio_lockdown > fine_lockdown){
+        warning(paste0("Attenzione la data di inizio lockdown e' posteriore alla data di fine lockdown!"))
+      }
+      
+      which(gfinale$date>=inizio_lockdown & gfinale$date<=fine_lockdown)->righe
       gfinale[righe,]$lockdown<-1 
     }
 
@@ -123,6 +150,9 @@ prepara_dati<-function(.x,previous=FALSE,logaritmo=TRUE,lockdown=TRUE,inizio_loc
   
   #week  
   if(week) gfinale$week<-lubridate::isoweek(gfinale$date)
+  
+  #weekend
+  if(weekend) gfinale$weekend<-as.numeric(lubridate::wday(gfinale$date,week_start = 1) %in% c(6,7))
   
   gfinale
   
