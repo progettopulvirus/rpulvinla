@@ -5,7 +5,7 @@
 \alias{cams}
 \title{Dati cams gennaio-maggio 2020}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 124944 rows and 8 columns.
+An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 424974 rows and 8 columns.
 }
 \usage{
 cams
