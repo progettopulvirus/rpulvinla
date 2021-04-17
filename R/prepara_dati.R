@@ -10,7 +10,7 @@
 #' pari a 0 altrimenti. Impostando day a TRUE viene creato un duplicato della variabile banda (banda e' una variabile pensata per l'spde mentre
 #' day puo' essere usata per uno smoother al di fuori dell'spde). Impostando wday a TRUE viene creata una variabile che assume valori da 1 a 7 a seconda del giorno della settimana.
 #' Impostando week a TRUE viene creata una variabile che assume valori da 1 a numero delle settimane del periodo in esame.   
-#' Impostando weekend a TRUE viene creata una variabile 0/1 per l'effetto fine settimana (sabato-domenica).   
+#' Impostando weekend a TRUE viene creata una variabile 0/1 per l'effetto fine settimana (solo domenica).   
 #' @param .x Un tibble con i dati di input   
 #' @param previous Logical  
 #' @param logaritmo Logical
@@ -152,7 +152,7 @@ prepara_dati<-function(.x,previous=FALSE,
   if(week) gfinale$week<-lubridate::isoweek(gfinale$date)
   
   #weekend
-  if(weekend) gfinale$weekend<-as.numeric(lubridate::wday(gfinale$date,week_start = 1) %in% c(6,7))
+  if(weekend) gfinale$weekend<-as.numeric(lubridate::wday(gfinale$date,week_start = 1) %in% c(7))
   
   gfinale
   
