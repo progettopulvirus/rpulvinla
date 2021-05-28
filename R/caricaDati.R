@@ -18,7 +18,7 @@ caricaDati<-function(pacchetto,inquinante,verbose=FALSE){
   if(missing(pacchetto)) stop("Nome del pacchetto dati mancante")
   if(missing(inquinante)) stop("Nome dell'inquinante mancante")
   
-  if(!pacchetto %in% c("piemonte","valleaosta","lombardia","patrento","veneto","friuliveneziagiulia","liguria","emiliaromagna","toscana","umbria","marche","lazio","abruzzo","molise","campania","puglia","basilicata","calabria","sicilia","sardegna"))  stop(glue::glue("{pacchetto} non e' un nome pacchetto valido"))
+  if(!pacchetto %in% c("piemonte","valleaosta","lombardia","patrento","pabolzano","veneto","friuliveneziagiulia","liguria","emiliaromagna","toscana","umbria","marche","lazio","abruzzo","molise","campania","puglia","basilicata","calabria","sicilia","sardegna"))  stop(glue::glue("{pacchetto} non e' un nome pacchetto valido"))
 
   
   if(!inquinante %in% c("pm10", "pm2.5", "no2", "nox", "c6h6", "co", "o3_max_h_d", "o3_max_mm8h_d")) stop(glue::glue("{inquinante} non e' un nome inquinante valido"))

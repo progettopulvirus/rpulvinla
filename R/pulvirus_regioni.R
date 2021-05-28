@@ -5,5 +5,5 @@
 #' 
 #' @export
 PULVIRUS_REGIONI<-c("basilicata","calabria","campania","emiliaromagna","friuliveneziagiulia",
-                    "lombardia","lazio","molise","pabolzano","patrento","piemonte","puglia",
+                    "lombardia","lazio","marche","molise","pabolzano","patrento","piemonte","puglia",
                     "sicilia","sardegna","toscana","veneto","valleaosta","umbria")
